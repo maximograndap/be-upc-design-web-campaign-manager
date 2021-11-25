@@ -121,6 +121,8 @@ namespace API
             //TODO: Registrar las interfaces para Inyección de Dependencias
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICampaingRepository, CampaignRepository>();
+            services.AddTransient<ICustomerBenefitRepository, CustomerBenefitRepository>();
 
             // ----------------------------------------------------------------
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
