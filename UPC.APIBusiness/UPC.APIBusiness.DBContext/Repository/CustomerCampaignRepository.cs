@@ -8,42 +8,38 @@ using System.Linq;
 
 namespace DBContext
 {
-    public class CustomerBenefitRepository : BaseRepository, ICustomerBenefitRepository
+    public class CustomerCampaignRepository : BaseRepository, ICustomerCampaignRepository
     {
-        public BaseResponse GetCustomer(string doc)
+        public BaseResponse GetCustomerCampaigns(string doc)
         {
             var entityResponse = new BaseResponse();
-            var customer = new EntityCustomerBenefit();
-            var giftsCustomer = new GiftsRepository();
-            var bondsCustomer = new BondsRepository();
+            var listCampaigns = new List<EntityCustomerCampaign>();
 
             try
             {
-                using (var dbConect = GetSqlConnection())
+                using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_LISTA_CLIENTE";
+                    const string sqlSP = @"SP_LISTA_CLIENTE_CAMPANIAS";
                     var paramDoc = new DynamicParameters();
                     paramDoc.Add(
                         name: "@NUMERODOCUMENTO",
                         value: doc,
                         dbType: DbType.String,
-                        direction: ParameterDirection.Input);
+                        direction: ParameterDirection.Input
+                        );
 
-                    customer = dbConect.Query<EntityCustomerBenefit>(
+                    listCampaigns = dbConect.Query<EntityCustomerCampaign>(
                         sql: sqlSP,
                         param: paramDoc,
                         commandType: CommandType.StoredProcedure
-                        ).FirstOrDefault();
+                        ).ToList();
 
-                    if (customer != null)
+                    if (listCampaigns.Count > 0)
                     {
-                        customer.bonos = bondsCustomer.GetBonds(customer.numeroDocumento);
-                        customer.obsequios = giftsCustomer.GetGifts(customer.numeroDocumento);
-
                         entityResponse.issuccess = true;
                         entityResponse.errorcode = "0";
                         entityResponse.errormessage = String.Empty;
-                        entityResponse.data = customer;
+                        entityResponse.data = listCampaigns;
                     }
                     else
                     {
@@ -54,7 +50,7 @@ namespace DBContext
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 entityResponse.issuccess = false;
                 entityResponse.errorcode = "-1";

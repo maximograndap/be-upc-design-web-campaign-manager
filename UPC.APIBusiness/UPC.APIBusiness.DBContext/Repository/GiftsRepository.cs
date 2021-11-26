@@ -36,7 +36,7 @@ namespace DBContext
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
 
             return listGifts;
