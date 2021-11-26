@@ -307,6 +307,29 @@
             <param name="doc"></param>
             <returns></returns>
         </member>
+        <member name="T:UPC.APIBusiness.API.Controllers.CustomerCampaignController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:UPC.APIBusiness.API.Controllers.CustomerCampaignController._CustomerCampaignRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CustomerCampaignController.#ctor(DBContext.ICustomerCampaignRepository)">
+            <summary>
+            
+            </summary>
+            <param name="CustomerCampaignRepository"></param>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CustomerCampaignController.GetCustomerCampaigns(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="doc"></param>
+            <returns></returns>
+        </member>
         <member name="T:UPC.Business.API.Controllers.UserController">
             <summary>
             

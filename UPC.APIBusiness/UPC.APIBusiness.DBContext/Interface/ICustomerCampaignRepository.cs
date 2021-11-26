@@ -5,8 +5,8 @@ using DBEntity;
 
 namespace DBContext
 {
-    public interface ICampaingRepository
+    public interface ICustomerCampaignRepository
     {
-        BaseResponse GetCampaings();
+        BaseResponse GetCustomerCampaigns(string doc);
     }
 }

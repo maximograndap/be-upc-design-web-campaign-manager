@@ -7,6 +7,6 @@ namespace DBContext
 {
     public interface ICustomerBenefitRepository
     {
-        EntityCustomerBenefit GetCustomer(string doc);
+        BaseResponse GetCustomer(string doc);
     }
 }

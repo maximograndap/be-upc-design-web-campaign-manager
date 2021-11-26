@@ -10,8 +10,9 @@ namespace DBContext
 {
     public class CampaignRepository : BaseRepository, ICampaingRepository
     {
-        public List<EntityCampaing> GetCampaings()
+        public BaseResponse GetCampaings()
         {
+            var entityResponse = new BaseResponse();
             var listCampaigns = new List<EntityCampaing>();
 
             try
@@ -24,14 +25,31 @@ namespace DBContext
                         commandType: CommandType.StoredProcedure
                         ).ToList();
 
+                    if (listCampaigns.Count > 0)
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = listCampaigns;
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
+                    }
                 }
             }
             catch(Exception ex)
             {
-
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
             }
 
-            return listCampaigns;
+            return entityResponse;
         }
     }
 }
