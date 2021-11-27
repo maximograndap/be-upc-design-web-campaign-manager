@@ -7,6 +7,8 @@ namespace DBContext
 {
     public interface ICampaingRepository
     {
-        BaseResponse GetCampaings();
+        BaseResponse GetCampaingsActives();
+        BaseResponse GetCampaingsAll();
+        BaseResponse GetCampaing(int idCampania);
     }
 }
