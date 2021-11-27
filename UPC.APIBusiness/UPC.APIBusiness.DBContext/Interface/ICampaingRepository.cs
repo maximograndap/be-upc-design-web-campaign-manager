@@ -10,5 +10,6 @@ namespace DBContext
         BaseResponse GetCampaingsActives();
         BaseResponse GetCampaingsAll();
         BaseResponse GetCampaing(int idCampania);
+        BaseResponse InsertCampaign(EntityCampaignMaintenance campaign);
     }
 }

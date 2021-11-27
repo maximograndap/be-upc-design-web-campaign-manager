@@ -18,6 +18,7 @@ namespace UPC.APIBusiness.API.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/campaigns")]
+    [ApiController]
     public class CampaignController : Controller
     {
         /// <summary>
@@ -74,6 +75,21 @@ namespace UPC.APIBusiness.API.Controllers
         {
             var returnCampaign = _CampaingRepository.GetCampaing(idCampania);
             return Json(returnCampaign);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="campaign"></param>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("insertcampaign")]
+        public ActionResult InsertCampaign(EntityCampaignMaintenance campaign)
+        {
+            var returnInsert = _CampaingRepository.InsertCampaign(campaign);
+            return Json(returnInsert);
         }
     }
 }
