@@ -145,5 +145,98 @@ namespace DBContext
 
             return entityResponse;
         }
+
+        public BaseResponse InsertCampaign(EntityCampaignMaintenance campaign)
+        {
+            var entityReponse = new BaseResponse();
+
+            try
+            {
+                using(var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_INSERT_CAMPANIA";
+                    var paramsInsert = new DynamicParameters();
+
+                    paramsInsert.Add(
+                        name: "@NOMBRECAMPANIA",
+                        value: campaign.nombreCampania,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@DESCCAMPANIA",
+                        value: campaign.descCampania,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@FECHAINICIO",
+                        value: campaign.fechaInicio,
+                        dbType: DbType.DateTime,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@FECHAFIN",
+                        value: campaign.fechaFin,
+                        dbType: DbType.DateTime,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@IDTIPOCAMPANIA",
+                        value: campaign.idTipoCampania,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@IDTIPOBENEFICIO",
+                        value: campaign.idTipoBeneficio,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramsInsert.Add(
+                        name: "@IDCAMPANIA",
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Output
+                        );
+
+                    dbConect.Query(
+                        sql: sqlSP,
+                        param: paramsInsert,
+                        commandType: CommandType.StoredProcedure
+                        );
+
+                    int idCampania = paramsInsert.Get<int>(
+                        "@IDCAMPANIA"
+                        );
+
+                    if (idCampania > 0)
+                    {
+                        entityReponse.issuccess = true;
+                        entityReponse.errorcode = "0";
+                        entityReponse.errormessage = String.Empty;
+                        entityReponse.data = new {
+                            id = idCampania,
+                            nombreCampania = campaign.nombreCampania
+                        };
+                    }
+                    else
+                    {
+                        entityReponse.issuccess = false;
+                        entityReponse.errorcode = "0";
+                        entityReponse.errormessage = String.Empty;
+                        entityReponse.data = null;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                entityReponse.issuccess = false;
+                entityReponse.errorcode = "-1";
+                entityReponse.errormessage = ex.Message;
+                entityReponse.data = null;
+            }
+
+            return entityReponse;
+        }
     }
 }
