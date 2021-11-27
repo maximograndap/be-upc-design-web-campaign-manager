@@ -284,6 +284,18 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.GetCampaingsAll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.GetCampaign(System.Int32)">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UPC.APIBusiness.API.Controllers.CustomerBenefitController">
             <summary>
             

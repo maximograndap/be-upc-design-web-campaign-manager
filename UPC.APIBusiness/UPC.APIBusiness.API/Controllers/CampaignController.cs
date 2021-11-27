@@ -41,11 +41,39 @@ namespace UPC.APIBusiness.API.Controllers
         [Produces("application/json")]
         [AllowAnonymous]
         [HttpGet]
-        [Route("getcampaigns")]
+        [Route("getcampaignsactives")]
         public ActionResult GetCampaings()
         {
-            var returnCampaings = _CampaingRepository.GetCampaings();
+            var returnCampaings = _CampaingRepository.GetCampaingsActives();
             return Json(returnCampaings);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getcampaignsall")]
+        public ActionResult GetCampaingsAll()
+        {
+            var returnCampaingsAll = _CampaingRepository.GetCampaingsAll();
+            return Json(returnCampaingsAll);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getcampaign")]
+        public ActionResult GetCampaign(int idCampania)
+        {
+            var returnCampaign = _CampaingRepository.GetCampaing(idCampania);
+            return Json(returnCampaign);
         }
     }
 }

@@ -10,7 +10,59 @@ namespace DBContext
 {
     public class CampaignRepository : BaseRepository, ICampaingRepository
     {
-        public BaseResponse GetCampaings()
+        public BaseResponse GetCampaing(int idCampania)
+        {
+            var entityResponse = new BaseResponse();
+            var campaign = new EntityCampaing();
+
+            try
+            {
+                using(var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_LISTA_CAMPANIA";
+                    var paramId = new DynamicParameters();
+                    paramId.Add(
+                        name: "@IDCAMPANIA",
+                        value: idCampania,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+
+                    campaign = dbConect.Query<EntityCampaing>(
+                        sql: sqlSP,
+                        param: paramId,
+                        commandType: CommandType.StoredProcedure
+                        ).FirstOrDefault();
+                }
+
+                if (campaign != null)
+                {
+                    entityResponse.issuccess = true;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = campaign;
+                }
+                else
+                {
+                    entityResponse.issuccess = false;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = null;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
+            }
+
+            return entityResponse;
+        }
+
+        public BaseResponse GetCampaingsActives()
         {
             var entityResponse = new BaseResponse();
             var listCampaigns = new List<EntityCampaing>();
@@ -19,7 +71,7 @@ namespace DBContext
             {
                 using (var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_LISTA_CAMPANIAS";
+                    const string sqlSP = @"SP_LISTA_CAMPANIAS_ACTIVAS";
                     listCampaigns = dbConect.Query<EntityCampaing>(
                         sql: sqlSP,
                         commandType: CommandType.StoredProcedure
@@ -39,6 +91,48 @@ namespace DBContext
                         entityResponse.errormessage = String.Empty;
                         entityResponse.data = null;
                     }
+                }
+            }
+            catch(Exception ex)
+            {
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
+            }
+
+            return entityResponse;
+        }
+
+        public BaseResponse GetCampaingsAll()
+        {
+            var entityResponse = new BaseResponse();
+            var listCampaignsAll = new List<EntityCampaing>();
+
+            try
+            {
+                using (var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_LISTA_CAMPANIAS_TODAS";
+                    listCampaignsAll = dbConect.Query<EntityCampaing>(
+                        sql: sqlSP,
+                        commandType: CommandType.StoredProcedure
+                        ).ToList();
+                }
+
+                if (listCampaignsAll.Count > 0)
+                {
+                    entityResponse.issuccess = true;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = listCampaignsAll;
+                }
+                else
+                {
+                    entityResponse.issuccess = true;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = null;
                 }
             }
             catch(Exception ex)
