@@ -91,5 +91,20 @@ namespace UPC.APIBusiness.API.Controllers
             var returnInsert = _CampaingRepository.InsertCampaign(campaign);
             return Json(returnInsert);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="campaign"></param>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("updatecampaign")]
+        public ActionResult UpdateCampaign(EntityCampaignMaintenance campaign)
+        {
+            var returnUpd = _CampaingRepository.UpdateCampaign(campaign);
+            return Json(returnUpd);
+        }
     }
 }
