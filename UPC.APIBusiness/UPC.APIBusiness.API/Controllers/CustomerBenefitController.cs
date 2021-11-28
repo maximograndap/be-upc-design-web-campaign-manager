@@ -18,6 +18,7 @@ namespace UPC.APIBusiness.API.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/customerbenefit")]
+    [ApiController]
     public class CustomerBenefitController : Controller
     {
         /// <summary>

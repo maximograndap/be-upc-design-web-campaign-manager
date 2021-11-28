@@ -148,7 +148,7 @@ namespace DBContext
 
         public BaseResponse InsertCampaign(EntityCampaignMaintenance campaign)
         {
-            var entityReponse = new BaseResponse();
+            var entityResponse = new BaseResponse();
 
             try
             {
@@ -211,32 +211,135 @@ namespace DBContext
 
                     if (idCampania > 0)
                     {
-                        entityReponse.issuccess = true;
-                        entityReponse.errorcode = "0";
-                        entityReponse.errormessage = String.Empty;
-                        entityReponse.data = new {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = new {
                             id = idCampania,
                             nombreCampania = campaign.nombreCampania
                         };
                     }
                     else
                     {
-                        entityReponse.issuccess = false;
-                        entityReponse.errorcode = "0";
-                        entityReponse.errormessage = String.Empty;
-                        entityReponse.data = null;
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
                     }
                 }
             }
             catch(Exception ex)
             {
-                entityReponse.issuccess = false;
-                entityReponse.errorcode = "-1";
-                entityReponse.errormessage = ex.Message;
-                entityReponse.data = null;
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
             }
 
-            return entityReponse;
+            return entityResponse;
+        }
+
+        public BaseResponse UpdateCampaign(EntityCampaignMaintenance campaign)
+        {
+            var entityResponse = new BaseResponse();
+            try
+            {
+                using(var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_UPDATE_CAMPANIA";
+                    var paramUpd = new DynamicParameters();
+
+                    paramUpd.Add(
+                        name: "@IDCAMPANIA",
+                        value: campaign.idCampania,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@NOMBRECAMPANIA",
+                        value: campaign.nombreCampania,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@DESCCAMPANIA",
+                        value: campaign.descCampania,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@FECHAINICIO",
+                        value: campaign.fechaInicio,
+                        dbType: DbType.DateTime,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@FECHAFIN",
+                        value: campaign.fechaFin,
+                        dbType: DbType.DateTime,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@IDTIPOCAMPANIA",
+                        value: campaign.idTipoCampania,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@IDTIPOBENEFICIO",
+                        value: campaign.idTipoBeneficio,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@INDICADORACT",
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Output
+                        );
+
+                    dbConect.Query(
+                        sql: sqlSP,
+                        param: paramUpd,
+                        commandType: CommandType.StoredProcedure
+                        );
+
+                    int indicadorUpd = paramUpd.Get<int>(
+                        "@INDICADORACT"
+                        );
+
+                    if (indicadorUpd.Equals(0))
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = new {
+                            indicadorActualizacion = indicadorUpd,
+                            mensajeActualizacion = "Se actualizo correctamente"
+                        };
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = new
+                        {
+                            indicadorActualizacion = indicadorUpd,
+                            mensajeActualizacion = "No se actualizo, los valores ingresados son los mismos a los actuales o ID de campaña no existe",
+
+                        };
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
+            }
+
+            return entityResponse;
         }
     }
 }

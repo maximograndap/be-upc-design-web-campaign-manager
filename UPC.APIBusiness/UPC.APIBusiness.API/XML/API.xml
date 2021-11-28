@@ -303,6 +303,13 @@
             <param name="campaign"></param>
             <returns></returns>
         </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.UpdateCampaign(DBEntity.EntityCampaignMaintenance)">
+            <summary>
+            
+            </summary>
+            <param name="campaign"></param>
+            <returns></returns>
+        </member>
         <member name="T:UPC.APIBusiness.API.Controllers.CustomerBenefitController">
             <summary>
             
