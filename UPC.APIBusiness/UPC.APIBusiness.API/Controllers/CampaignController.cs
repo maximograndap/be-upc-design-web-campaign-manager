@@ -106,5 +106,48 @@ namespace UPC.APIBusiness.API.Controllers
             var returnUpd = _CampaingRepository.UpdateCampaign(campaign);
             return Json(returnUpd);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idCampaign"></param>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("deletecampaign")]
+        public ActionResult DeleteCampaign(int idCampaign)
+        {
+            var returnDel = _CampaingRepository.DeleteCampaign(idCampaign);
+            return Json(returnDel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getbenefittype")]
+        public ActionResult GetBenefitType()
+        {
+            var returnBenefitType = _CampaingRepository.GetBenefitType();
+            return Json(returnBenefitType);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getcampaigntype")]
+        public ActionResult GetCampaignType()
+        {
+            var returnCampaignType = _CampaingRepository.GetCampaignType();
+            return Json(returnCampaignType);
+        }
     }
 }
