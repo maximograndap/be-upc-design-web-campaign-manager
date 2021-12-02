@@ -21,6 +21,7 @@ namespace DBContext
                 {
                     const string sqlSP = @"SP_LISTA_CLIENTE_BONOS";
                     var paramDoc = new DynamicParameters();
+
                     paramDoc.Add(
                         name: "@NUMERODOCUMENTO",
                         value: doc,
