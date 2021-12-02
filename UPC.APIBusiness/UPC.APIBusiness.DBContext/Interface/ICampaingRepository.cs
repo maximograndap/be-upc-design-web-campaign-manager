@@ -12,5 +12,8 @@ namespace DBContext
         BaseResponse GetCampaing(int idCampania);
         BaseResponse InsertCampaign(EntityCampaignMaintenance campaign);
         BaseResponse UpdateCampaign(EntityCampaignMaintenance campaign);
+        BaseResponse DeleteCampaign(int idCampaign);
+        BaseResponse GetBenefitType();
+        BaseResponse GetCampaignType();
     }
 }

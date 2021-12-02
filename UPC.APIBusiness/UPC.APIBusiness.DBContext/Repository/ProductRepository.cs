@@ -8,21 +8,22 @@ using System.Linq;
 
 namespace DBContext
 {
-    public class CampaignRepository : BaseRepository, ICampaingRepository
+    public class ProductRepository : BaseRepository, IProductRepository
     {
-        public BaseResponse DeleteCampaign(int idCampaign)
+        public BaseResponse DeleteProduct(int idProducto)
         {
             var entityResponse = new BaseResponse();
 
             try
             {
-                using (var dbConect = GetSqlConnection())
+                using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_DELETE_CAMPANIA";
+                    const string sqlSP = @"SP_DELETE_PRODUCTO";
                     var paramDel = new DynamicParameters();
+
                     paramDel.Add(
-                        name: "@IDCAMPANIA",
-                        value: idCampaign,
+                        name: "@IDPRODUCTO",
+                        value: idProducto,
                         dbType: DbType.Int32,
                         direction: ParameterDirection.Input
                         );
@@ -46,23 +47,24 @@ namespace DBContext
                     {
                         entityResponse.issuccess = true;
                         entityResponse.errorcode = "0";
+                        entityResponse.errormessage = string.Empty;
+                        entityResponse.data = new {
+                            indicadorBorrado = indicadorDel,
+                            mensajeBorrado = "El producto se ha desactivado correctamente"
+                        };
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
                         entityResponse.errormessage = String.Empty;
                         entityResponse.data = new {
                             indicadorBorrado = indicadorDel,
-                            mensajeBorrado = "La campaña se ha desactivado correctamente"
-                        };
-                    }
-                    else
-                    {
-                        entityResponse.issuccess = false;
-                        entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = new{
-                            indicadorBorrado = indicadorDel,
-                            mensajeBorrado = "La campaña no se ha desactivado correctamente o ya se encontraba desactivada"
+                            mensajeBorrado = "El producto no se ha desactivado correctamente o ya se encontraba desactivado"
                         };
                     }
                 }
+
             }
             catch(Exception ex)
             {
@@ -75,123 +77,29 @@ namespace DBContext
             return entityResponse;
         }
 
-        public BaseResponse GetBenefitType()
+        public BaseResponse GetActivesProducts()
         {
             var entityResponse = new BaseResponse();
-            var listBenefitTypeCampaign = new List<EntityBenefitType>();
+            var listActivesProducts = new List<EntityProduct>();
 
             try
             {
-                using(var dbConect = GetSqlConnection())
+                using (var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_LISTA_TIPO_BENEFICIO";
+                    const string sqlSP = @"SP_LISTA_ACTIVE_PRODUCTOS";
 
-                    listBenefitTypeCampaign = dbConect.Query<EntityBenefitType>(
+                    listActivesProducts = dbConect.Query<EntityProduct>(
                         sql: sqlSP,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
-
-                    if (listBenefitTypeCampaign.Count > 0)
-                    {
-                        entityResponse.issuccess = true;
-                        entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = listBenefitTypeCampaign;
-                    }
-                    else
-                    {
-                        entityResponse.issuccess = false;
-                        entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = null;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                entityResponse.issuccess = false;
-                entityResponse.errorcode = "-1";
-                entityResponse.errormessage = ex.Message;
-                entityResponse.data = null;
-            }
-
-            return entityResponse;
-        }
-
-        public BaseResponse GetCampaignType()
-        {
-            var entityResponse = new BaseResponse();
-            var listCampaignType = new List<EntityCampaignType>();
-
-            try
-            {
-                using(var dbConect = GetSqlConnection())
-                {
-                    const string sqlSP = @"SP_LISTA_TIPO_CAMPANIA";
-
-                    listCampaignType = dbConect.Query<EntityCampaignType>(
-                        sql: sqlSP,
-                        commandType: CommandType.StoredProcedure
-                        ).ToList();
-
-                    if (listCampaignType.Count > 0)
-                    {
-                        entityResponse.issuccess = true;
-                        entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = listCampaignType;
-                    }
-                    else
-                    {
-                        entityResponse.issuccess = false;
-                        entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = null;
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                entityResponse.issuccess = false;
-                entityResponse.errorcode = "-1";
-                entityResponse.errormessage = ex.Message;
-                entityResponse.data = null;
-            }
-
-            return entityResponse;
-        }
-
-        public BaseResponse GetCampaing(int idCampania)
-        {
-            var entityResponse = new BaseResponse();
-            var campaign = new EntityCampaing();
-
-            try
-            {
-                using(var dbConect = GetSqlConnection())
-                {
-                    const string sqlSP = @"SP_LISTA_CAMPANIA";
-                    var paramId = new DynamicParameters();
-                    paramId.Add(
-                        name: "@IDCAMPANIA",
-                        value: idCampania,
-                        dbType: DbType.Int32,
-                        direction: ParameterDirection.Input
-                        );
-
-                    campaign = dbConect.Query<EntityCampaing>(
-                        sql: sqlSP,
-                        param: paramId,
-                        commandType: CommandType.StoredProcedure
-                        ).FirstOrDefault();
                 }
 
-                if (campaign != null)
+                if (listActivesProducts.Count > 0)
                 {
                     entityResponse.issuccess = true;
                     entityResponse.errorcode = "0";
                     entityResponse.errormessage = String.Empty;
-                    entityResponse.data = campaign;
+                    entityResponse.data = listActivesProducts;
                 }
                 else
                 {
@@ -200,7 +108,6 @@ namespace DBContext
                     entityResponse.errormessage = String.Empty;
                     entityResponse.data = null;
                 }
-
             }
             catch(Exception ex)
             {
@@ -213,27 +120,80 @@ namespace DBContext
             return entityResponse;
         }
 
-        public BaseResponse GetCampaingsActives()
+        public BaseResponse GetAllProducts()
         {
             var entityResponse = new BaseResponse();
-            var listCampaigns = new List<EntityCampaing>();
+            var listAllProducts = new List<EntityProduct>();
 
             try
             {
                 using (var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_LISTA_CAMPANIAS_ACTIVAS";
-                    listCampaigns = dbConect.Query<EntityCampaing>(
+                    const string sqlSP = @"SP_LISTA_ALL_PRODUCTOS";
+
+                    listAllProducts = dbConect.Query<EntityProduct>(
                         sql: sqlSP,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
+                }
 
-                    if (listCampaigns.Count > 0)
+                if (listAllProducts.Count > 0)
+                {
+                    entityResponse.issuccess = true;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = listAllProducts;
+                }
+                else
+                {
+                    entityResponse.issuccess = false;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = String.Empty;
+                    entityResponse.data = null;
+                }
+            }
+            catch(Exception ex)
+            {
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "0";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
+            }
+
+            return entityResponse;
+        }
+
+        public BaseResponse GetProduct(int idProducto)
+        {
+            var entityResponse = new BaseResponse();
+            var product = new EntityProduct();
+
+            try
+            {
+                using (var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_OBTIENE_PRODUCTO";
+                    var paramProd = new DynamicParameters();
+
+                    paramProd.Add(
+                        name: "@IDPRODUCTO",
+                        value: idProducto,
+                        dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+
+                    product = dbConect.Query<EntityProduct>(
+                        sql: sqlSP,
+                        param: paramProd,
+                        commandType: CommandType.StoredProcedure
+                        ).FirstOrDefault();
+
+                    if (product != null)
                     {
                         entityResponse.issuccess = true;
                         entityResponse.errorcode = "0";
                         entityResponse.errormessage = String.Empty;
-                        entityResponse.data = listCampaigns;
+                        entityResponse.data = product;
                     }
                     else
                     {
@@ -255,35 +215,35 @@ namespace DBContext
             return entityResponse;
         }
 
-        public BaseResponse GetCampaingsAll()
+        public BaseResponse GetProductCategory()
         {
             var entityResponse = new BaseResponse();
-            var listCampaignsAll = new List<EntityCampaing>();
+            var listProductCategory = new List<EntityProductCategory>();
 
             try
             {
-                using (var dbConect = GetSqlConnection())
+                using(var dbconect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_LISTA_CAMPANIAS_TODAS";
-                    listCampaignsAll = dbConect.Query<EntityCampaing>(
+                    const string sqlSP = @"SP_LISTA_CATEGORIA_PRODUCTO";
+                    listProductCategory = dbconect.Query<EntityProductCategory>(
                         sql: sqlSP,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
-                }
 
-                if (listCampaignsAll.Count > 0)
-                {
-                    entityResponse.issuccess = true;
-                    entityResponse.errorcode = "0";
-                    entityResponse.errormessage = String.Empty;
-                    entityResponse.data = listCampaignsAll;
-                }
-                else
-                {
-                    entityResponse.issuccess = true;
-                    entityResponse.errorcode = "0";
-                    entityResponse.errormessage = String.Empty;
-                    entityResponse.data = null;
+                    if (listProductCategory.Count > 0)
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = listProductCategory;
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
+                    }
                 }
             }
             catch(Exception ex)
@@ -297,7 +257,7 @@ namespace DBContext
             return entityResponse;
         }
 
-        public BaseResponse InsertCampaign(EntityCampaignMaintenance campaign)
+        public BaseResponse InsertProduct(EntityProductMaintenance product)
         {
             var entityResponse = new BaseResponse();
 
@@ -305,69 +265,58 @@ namespace DBContext
             {
                 using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_INSERT_CAMPANIA";
-                    var paramsInsert = new DynamicParameters();
+                    const string sqlSP = @"SP_INSERT_PRODUCTO";
+                    var paramIns = new DynamicParameters();
 
-                    paramsInsert.Add(
-                        name: "@NOMBRECAMPANIA",
-                        value: campaign.nombreCampania,
+                    paramIns.Add(
+                        name: "@NOMBREPRODUCTO",
+                        value: product.nombreProducto,
                         dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
-                    paramsInsert.Add(
-                        name: "@DESCCAMPANIA",
-                        value: campaign.descCampania,
+                    paramIns.Add(
+                        name: "@DESCPRODUCTO",
+                        value: product.descProducto,
                         dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
-                    paramsInsert.Add(
-                        name: "@FECHAINICIO",
-                        value: campaign.fechaInicio,
-                        dbType: DbType.DateTime,
+                    paramIns.Add(
+                        name: "@PRECIOPRODUCTO",
+                        value: product.precioProducto,
+                        dbType: DbType.Decimal,
                         direction: ParameterDirection.Input
                         );
-                    paramsInsert.Add(
-                        name: "@FECHAFIN",
-                        value: campaign.fechaFin,
-                        dbType: DbType.DateTime,
-                        direction: ParameterDirection.Input
-                        );
-                    paramsInsert.Add(
-                        name: "@IDTIPOCAMPANIA",
-                        value: campaign.idTipoCampania,
+                    paramIns.Add(
+                        name: "@IDCATEGORIAPRODUCTO",
+                        value: product.idCategoriaProducto,
                         dbType: DbType.Int32,
                         direction: ParameterDirection.Input
                         );
-                    paramsInsert.Add(
-                        name: "@IDTIPOBENEFICIO",
-                        value: campaign.idTipoBeneficio,
-                        dbType: DbType.Int32,
-                        direction: ParameterDirection.Input
-                        );
-                    paramsInsert.Add(
-                        name: "@IDCAMPANIA",
+                    paramIns.Add(
+                        name: "@IDPRODUCTO",
                         dbType: DbType.Int32,
                         direction: ParameterDirection.Output
                         );
 
                     dbConect.Query(
                         sql: sqlSP,
-                        param: paramsInsert,
+                        param: paramIns,
                         commandType: CommandType.StoredProcedure
                         );
 
-                    int idCampania = paramsInsert.Get<int>(
-                        "@IDCAMPANIA"
+                    var idProducto = paramIns.Get<int>(
+                        "@IDPRODUCTO"
                         );
 
-                    if (idCampania > 0)
+                    if (idProducto > 0)
                     {
                         entityResponse.issuccess = true;
                         entityResponse.errorcode = "0";
                         entityResponse.errormessage = String.Empty;
-                        entityResponse.data = new {
-                            id = idCampania,
-                            nombreCampania = campaign.nombreCampania
+                        entityResponse.data = new
+                        {
+                            id = idProducto,
+                            nombreCampania = product.nombreProducto
                         };
                     }
                     else
@@ -390,55 +339,44 @@ namespace DBContext
             return entityResponse;
         }
 
-        public BaseResponse UpdateCampaign(EntityCampaignMaintenance campaign)
+        public BaseResponse UpdateProduct(EntityProductMaintenance product)
         {
             var entityResponse = new BaseResponse();
+
             try
             {
                 using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_UPDATE_CAMPANIA";
+                    const string sqlSP = @"SP_UPDATE_PRODUCTO";
                     var paramUpd = new DynamicParameters();
 
                     paramUpd.Add(
-                        name: "@IDCAMPANIA",
-                        value: campaign.idCampania,
+                        name: "@IDPRODUCTO",
+                        value: product.idProducto,
                         dbType: DbType.Int32,
                         direction: ParameterDirection.Input
                         );
                     paramUpd.Add(
-                        name: "@NOMBRECAMPANIA",
-                        value: campaign.nombreCampania,
+                        name: "@NOMBREPRODUCTO",
+                        value: product.nombreProducto,
                         dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
                     paramUpd.Add(
-                        name: "@DESCCAMPANIA",
-                        value: campaign.descCampania,
+                        name: "@DESCPRODUCTO",
+                        value: product.descProducto,
                         dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
                     paramUpd.Add(
-                        name: "@FECHAINICIO",
-                        value: campaign.fechaInicio,
-                        dbType: DbType.DateTime,
+                        name: "@PRECIOPRODUCTO",
+                        value: product.precioProducto,
+                        dbType: DbType.Decimal,
                         direction: ParameterDirection.Input
                         );
                     paramUpd.Add(
-                        name: "@FECHAFIN",
-                        value: campaign.fechaFin,
-                        dbType: DbType.DateTime,
-                        direction: ParameterDirection.Input
-                        );
-                    paramUpd.Add(
-                        name: "@IDTIPOCAMPANIA",
-                        value: campaign.idTipoCampania,
-                        dbType: DbType.Int32,
-                        direction: ParameterDirection.Input
-                        );
-                    paramUpd.Add(
-                        name: "@IDTIPOBENEFICIO",
-                        value: campaign.idTipoBeneficio,
+                        name: "@IDCATEGORIAPRODUCTO",
+                        value: product.idCategoriaProducto,
                         dbType: DbType.Int32,
                         direction: ParameterDirection.Input
                         );
@@ -454,32 +392,31 @@ namespace DBContext
                         commandType: CommandType.StoredProcedure
                         );
 
-                    int indicadorUpd = paramUpd.Get<int>(
+                    var indicadorAct = paramUpd.Get<int>(
                         "@INDICADORACT"
                         );
 
-                    if (indicadorUpd.Equals(0))
+                    if (indicadorAct.Equals(0))
                     {
                         entityResponse.issuccess = true;
                         entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
+                        entityResponse.errormessage = string.Empty;
                         entityResponse.data = new {
-                            indicadorActualizacion = indicadorUpd,
-                            mensajeActualizacion = "Campaña actualizada correctamente"
+                            indicadorAct = indicadorAct,
+                            mensajeActualizacion = "Producto actualizado correctamente"
                         };
                     }
                     else
                     {
                         entityResponse.issuccess = false;
                         entityResponse.errorcode = "0";
-                        entityResponse.errormessage = String.Empty;
-                        entityResponse.data = new
-                        {
-                            indicadorActualizacion = indicadorUpd,
-                            mensajeActualizacion = "No se actualizo, los valores ingresados son los mismos a los actuales o ID de campaña no existe",
-
+                        entityResponse.errormessage = string.Empty;
+                        entityResponse.data = new {
+                            indicadorAct = indicadorAct,
+                            mensajeActualizacion = "No se actualizo, los valores ingresados son los mismos a los actuales o ID de producto no existe"
                         };
                     }
+
                 }
             }
             catch(Exception ex)

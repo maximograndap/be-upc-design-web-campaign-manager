@@ -310,6 +310,25 @@
             <param name="campaign"></param>
             <returns></returns>
         </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.DeleteCampaign(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="idCampaign"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.GetBenefitType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CampaignController.GetCampaignType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UPC.APIBusiness.API.Controllers.CustomerBenefitController">
             <summary>
             
@@ -354,6 +373,67 @@
             
             </summary>
             <param name="doc"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UPC.APIBusiness.API.Controllers.ProductController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:UPC.APIBusiness.API.Controllers.ProductController._ProductRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.#ctor(DBContext.IProductRepository)">
+            <summary>
+            
+            </summary>
+            <param name="ProductRepository"></param>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.GetActivesProducts">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.GetAllProducts">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.GetProduct(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="idProduct"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.GetProductCategory">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.InsertProduct(DBEntity.EntityProductMaintenance)">
+            <summary>
+            
+            </summary>
+            <param name="product"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.UpdateProduct(DBEntity.EntityProductMaintenance)">
+            <summary>
+            
+            </summary>
+            <param name="productMaintenance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ProductController.DeleteProduct(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="idProducto"></param>
             <returns></returns>
         </member>
         <member name="T:UPC.Business.API.Controllers.UserController">
