@@ -329,6 +329,47 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:UPC.APIBusiness.API.Controllers.ConfigureCampaignController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:UPC.APIBusiness.API.Controllers.ConfigureCampaignController._ConfigureCampaignRepository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ConfigureCampaignController.#ctor(DBContext.IConfigureCampaignRepository)">
+            <summary>
+            
+            </summary>
+            <param name="ConfigureCampaignRepository"></param>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ConfigureCampaignController.InsertConfigureCampaign(DBEntity.EntityConfigureCampaign)">
+            <summary>
+            
+            </summary>
+            <param name="configureCampaign"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ConfigureCampaignController.GetBenefits">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ConfigureCampaignController.GetComparativeOperator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.ConfigureCampaignController.GetRuleFields">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UPC.APIBusiness.API.Controllers.CustomerBenefitController">
             <summary>
             
