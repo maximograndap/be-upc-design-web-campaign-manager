@@ -10,18 +10,63 @@ namespace DBContext
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
-        public List<EntityUser> GetUsers()
+        public BaseResponse Login(EntityLoginUser login)
         {
-            var returnEntity = new List<EntityUser>();
-            using (var db = GetSqlConnection())
+            var entityResponse = new BaseResponse();
+            var loginResponse = new EntityLoginResponse();
+
+            try
             {
-                const string sql = @"usp_ObtenerDepartamentos";
+                using(var dbConect = GetSqlConnection())
+                {
+                    const string sqlSP = @"SP_LISTA_USUARIO";
+                    var paramLogin = new DynamicParameters();
 
+                    paramLogin.Add(
+                        name: "@USUARIO",
+                        value: login.nombreUsuario,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
+                    paramLogin.Add(
+                        name: "@PASSWORD",
+                        value: login.password,
+                        dbType: DbType.String,
+                        direction: ParameterDirection.Input
+                        );
 
-                returnEntity = db.Query<EntityUser>(sql,
-                    commandType: CommandType.StoredProcedure).ToList();
+                    loginResponse = dbConect.Query<EntityLoginResponse>(
+                        sql: sqlSP,
+                        param: paramLogin,
+                        commandType: CommandType.StoredProcedure
+                        ).FirstOrDefault();
+                }
+
+                if (loginResponse != null)
+                {
+                    entityResponse.issuccess = true;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = string.Empty;
+                    entityResponse.data = loginResponse;
+                }
+                else
+                {
+                    entityResponse.issuccess = false;
+                    entityResponse.errorcode = "0";
+                    entityResponse.errormessage = string.Empty;
+                    entityResponse.data = null;
+                }
+
             }
-            return returnEntity;
+            catch(Exception ex)
+            {
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
+            }
+
+            return entityResponse;
         }
     }
 }

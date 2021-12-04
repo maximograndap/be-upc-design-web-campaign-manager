@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CampaignManager.APIBusiness.API.Security;
 
 namespace UPC.Business.API.Controllers
 {
@@ -18,6 +19,7 @@ namespace UPC.Business.API.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/User")]
+    [ApiController]
     public class UserController : Controller
     {
 
@@ -38,22 +40,33 @@ namespace UPC.Business.API.Controllers
         }
 
         /// <summary>
-        /// GetListUser
+        /// 
         /// </summary>
+        /// <param name="login"></param>
         /// <returns></returns>
         [Produces("application/json")]
-        [SwaggerOperation("GetListUser")]
         [AllowAnonymous]
-        [HttpGet]
-        [Route("GetListUser")]
-        public ActionResult Get()
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult> Login(EntityLoginUser login)
         {
-            var ret = _UserRepository.GetUsers();
+            var returnLogin = _UserRepository.Login(login);
 
-            if (ret == null)
-                return StatusCode(401);
+            if (returnLogin.data != null)
+            {
+                var loginResponse = returnLogin.data as EntityLoginResponse;
+                var idUser = loginResponse.idUsuario.ToString();
+                var documentUser = loginResponse.numeroDocumento;
 
-            return Json(ret);
+                var tokenGenerate = JsonConvert.DeserializeObject<AccessToken>(
+                    await new Authentication().GenerateToken(documentUser, idUser)
+                    ).access_token;
+
+                loginResponse.token = tokenGenerate;
+                returnLogin.data = loginResponse;
+            }
+
+            return Json(returnLogin);
         }
     }
 }

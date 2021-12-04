@@ -22,8 +22,8 @@ namespace API.IS
             List<ApiResource> apiResources = new List<ApiResource>();
             apiResources.Add(
                 new ApiResource(
-                    "API-APP-UPC",
-                    "API-APP-UPC",
+                    "API-APP-CAMPAIGNMANAGER",
+                    "API-APP-CAMPAIGNMANAGER",
                     new[]
                     {
                             JwtClaimTypes.Email,
