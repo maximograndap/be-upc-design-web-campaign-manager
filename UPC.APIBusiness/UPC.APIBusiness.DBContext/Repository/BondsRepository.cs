@@ -12,7 +12,6 @@ namespace DBContext
     {
         public List<EntityBonds> GetBonds(string doc)
         {
-            var entityResponse = new BaseResponse();
             var listBonds = new List<EntityBonds>();
 
             try

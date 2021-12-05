@@ -6,7 +6,7 @@ namespace DBEntity
 {
     public class EntityGifts
     {
-        public int idObsequio { get; set; }
+        public string idObsequio { get; set; }
         public string nombreObsequio { get; set; }
         public DateTime fechaAplicacion { get; set; }
         public string numeroComprobante { get; set; }

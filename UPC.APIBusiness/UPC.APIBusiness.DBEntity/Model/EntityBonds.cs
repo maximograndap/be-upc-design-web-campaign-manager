@@ -6,7 +6,7 @@ namespace DBEntity
 {
     public class EntityBonds
     {
-        public int idBono { get; set; }
+        public string idBono { get; set; }
         public string descBono { get; set; }
         public DateTime fechaAplicacion { get; set; }
         public decimal montoBruto { get; set; }
