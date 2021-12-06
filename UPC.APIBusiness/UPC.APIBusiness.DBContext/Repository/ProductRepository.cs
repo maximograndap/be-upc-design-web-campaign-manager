@@ -265,7 +265,7 @@ namespace DBContext
             {
                 using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_INSERT_PRODUCTO";
+                    const string sqlSP = @"SP_INSERTAR_PRODUCTO";
                     var paramIns = new DynamicParameters();
 
                     paramIns.Add(
@@ -290,6 +290,12 @@ namespace DBContext
                         name: "@IDCATEGORIAPRODUCTO",
                         value: product.idCategoriaProducto,
                         dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramIns.Add(
+                        name: "@IDUSUARIOCREA",
+                        value: product.usuarioCreacion,
+                        dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
                     paramIns.Add(
@@ -347,7 +353,7 @@ namespace DBContext
             {
                 using(var dbConect = GetSqlConnection())
                 {
-                    const string sqlSP = @"SP_UPDATE_PRODUCTO";
+                    const string sqlSP = @"SP_UPDATE_PRODUCTO_TK";
                     var paramUpd = new DynamicParameters();
 
                     paramUpd.Add(
@@ -378,6 +384,12 @@ namespace DBContext
                         name: "@IDCATEGORIAPRODUCTO",
                         value: product.idCategoriaProducto,
                         dbType: DbType.Int32,
+                        direction: ParameterDirection.Input
+                        );
+                    paramUpd.Add(
+                        name: "@IDUSUARIOMODIFICA",
+                        value: product.usuarioActualizacion,
+                        dbType: DbType.String,
                         direction: ParameterDirection.Input
                         );
                     paramUpd.Add(

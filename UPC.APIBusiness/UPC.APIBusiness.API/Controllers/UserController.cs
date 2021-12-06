@@ -55,7 +55,7 @@ namespace UPC.Business.API.Controllers
             if (returnLogin.data != null)
             {
                 var loginResponse = returnLogin.data as EntityLoginResponse;
-                var idUser = loginResponse.idUsuario.ToString();
+                var idUser = loginResponse.nombreusuario;
                 var documentUser = loginResponse.numeroDocumento;
 
                 var tokenGenerate = JsonConvert.DeserializeObject<AccessToken>(

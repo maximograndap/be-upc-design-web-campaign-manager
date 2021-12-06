@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DBEntity
 {
-    public class EntityProductMaintenance
+    public class EntityProductMaintenance : EntityBase
     {
         public int idProducto { get; set; }
         public string nombreProducto { get; set; }

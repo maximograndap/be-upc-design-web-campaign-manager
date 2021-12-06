@@ -97,11 +97,18 @@ namespace UPC.APIBusiness.API.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         [Produces("application/json")]
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         [Route("insertproduct")]
         public ActionResult InsertProduct(EntityProductMaintenance product)
         {
+            var identityUser = User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identityUser.Claims;
+
+            var idUsuario = claims.Where(p => p.Type == "client_codigo_usuario").FirstOrDefault()?.Value;
+
+            product.usuarioCreacion = idUsuario;
+
             var returnInsertProduct = _ProductRepository.InsertProduct(product);
             return Json(returnInsertProduct);
         }
@@ -112,11 +119,18 @@ namespace UPC.APIBusiness.API.Controllers
         /// <param name="productMaintenance"></param>
         /// <returns></returns>
         [Produces("application/json")]
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         [Route("updateproduct")]
         public ActionResult UpdateProduct(EntityProductMaintenance productMaintenance)
         {
+            var identityUser = User.Identity as ClaimsIdentity;
+            IEnumerable<Claim> claims = identityUser.Claims;
+
+            var idUsuario = claims.Where(p => p.Type == "client_codigo_usuario").FirstOrDefault()?.Value;
+
+            productMaintenance.usuarioActualizacion = idUsuario;
+
             var returnUpdateProd = _ProductRepository.UpdateProduct(productMaintenance);
             return Json(returnUpdateProd);
         }

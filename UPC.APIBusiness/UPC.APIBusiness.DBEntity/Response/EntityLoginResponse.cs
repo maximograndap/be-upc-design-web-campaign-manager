@@ -7,6 +7,7 @@ namespace DBEntity
     public class EntityLoginResponse
     {
         public int idUsuario { get; set; }
+        public string nombreusuario { get; set; }
         public string nombrePersona { get; set; }
         public string apellidoPersona { get; set; }
         public string numeroDocumento { get; set; }
