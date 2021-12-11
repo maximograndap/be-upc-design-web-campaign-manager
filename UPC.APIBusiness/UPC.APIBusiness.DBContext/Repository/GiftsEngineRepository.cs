@@ -10,8 +10,9 @@ namespace DBContext
 {
     public class GiftsEngineRepository : BaseRepository, IGiftsEngineRepository
     {
-        public List<EntityGiftsEngine> GetGiftsEngine(int idRegla)
+        public BaseResponse GetGiftsEngine(int idRegla)
         {
+            var entityResponse = new BaseResponse();
             var listGiftsEngine = new List<EntityGiftsEngine>();
 
             try
@@ -33,14 +34,32 @@ namespace DBContext
                         param: paramGift,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
+
+                    if (listGiftsEngine.Count() > 0)
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = listGiftsEngine;
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
+                    }
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
             }
 
-            return listGiftsEngine;
+            return entityResponse;
         }
     }
 }

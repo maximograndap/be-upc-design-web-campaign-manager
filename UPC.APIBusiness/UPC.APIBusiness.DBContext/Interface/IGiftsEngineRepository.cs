@@ -7,6 +7,6 @@ namespace DBContext
 {
     public interface IGiftsEngineRepository
     {
-        List<EntityGiftsEngine> GetGiftsEngine(int idRegla);
+        BaseResponse GetGiftsEngine(int idRegla);
     }
 }

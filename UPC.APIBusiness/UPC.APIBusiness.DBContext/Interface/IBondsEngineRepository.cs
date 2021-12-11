@@ -7,6 +7,6 @@ namespace DBContext
 {
     public interface IBondsEngineRepository
     {
-        List<EntityBondsEngine> GetBondsEngine(int idRegla);
+        BaseResponse GetBondsEngine(int idRegla);
     }
 }

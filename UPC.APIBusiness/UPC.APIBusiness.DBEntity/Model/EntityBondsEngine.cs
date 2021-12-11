@@ -7,7 +7,7 @@ namespace DBEntity
     public class EntityBondsEngine
     {
         public int idRegla { get; set; }
-        public int idBono { get; set; }
+        public string idBono { get; set; }
         public string nombreBono { get; set; }
         public int idProducto { get; set; }
         public string nombreProducto { get; set; }

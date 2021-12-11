@@ -18,6 +18,9 @@ namespace DBContext
             var bondsEngine = new BondsEngineRepository();
             var listCampaign = new List<EntityCriteriaEngine>();
             var numberOne = 1;
+            var responseCriteria = new BaseResponse();
+            var responseBonds = new BaseResponse();
+            var responseGifts = new BaseResponse();
 
             try
             {
@@ -32,11 +35,41 @@ namespace DBContext
 
                     var items = listCampaign.Count() - numberOne;
 
-                    for (int n = 0; n <= items; n++)
+                    if (listCampaign.Count() > 0)
                     {
-                        listCampaign[n].criterios = campaignCriteria.GetCampaignCriteria(listCampaign[n].idCampania);
-                        listCampaign[n].bonos = bondsEngine.GetBondsEngine(listCampaign[n].idRegla);
-                        listCampaign[n].obsequios = giftsEngine.GetGiftsEngine(listCampaign[n].idRegla);
+                        for (int n = 0; n <= items; n++)
+                        {
+                            responseCriteria = campaignCriteria.GetCampaignCriteria(listCampaign[n].idCampania);
+                            responseBonds = bondsEngine.GetBondsEngine(listCampaign[n].idRegla);
+                            responseGifts = giftsEngine.GetGiftsEngine(listCampaign[n].idRegla);
+                            listCampaign[n].criterios = responseCriteria.data as List<EntityCampaignCriteria>;
+                            listCampaign[n].bonos = responseBonds.data as List<EntityBondsEngine>;
+                            listCampaign[n].obsequios = responseGifts.data as List<EntityGiftsEngine>;
+                        }
+
+                        if (responseCriteria.issuccess & responseBonds.issuccess & responseGifts.issuccess)
+                        {
+                            entityResponse.issuccess = true;
+                            entityResponse.errorcode = "0";
+                            entityResponse.errormessage = string.Empty;
+                            entityResponse.data = listCampaign;
+                        }
+                        else
+                        {
+                            entityResponse.issuccess = false;
+                            entityResponse.errorcode = "-1";
+                            entityResponse.errormessage = "ErrorCriteriaCampaign: " + responseCriteria.errormessage + " | " +
+                                                          "ErrorBondsCriteria: " + responseBonds.errormessage + " | " +
+                                                          "ErrorGiftsCriteria: " + responseGifts.errormessage;
+                            entityResponse.data = null;
+                        }
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = string.Empty;
+                        entityResponse.data = null;
                     }
                 }
             }

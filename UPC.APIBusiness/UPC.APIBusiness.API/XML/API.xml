@@ -370,6 +370,28 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:UPC.APIBusiness.API.Controllers.CriteriaEngineController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:UPC.APIBusiness.API.Controllers.CriteriaEngineController._CriteriaEngine">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CriteriaEngineController.#ctor(DBContext.ICriteriaEngine)">
+            <summary>
+            
+            </summary>
+            <param name="CriteriaEngine"></param>
+        </member>
+        <member name="M:UPC.APIBusiness.API.Controllers.CriteriaEngineController.GetCriteriaEngine">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:UPC.APIBusiness.API.Controllers.CustomerBenefitController">
             <summary>
             

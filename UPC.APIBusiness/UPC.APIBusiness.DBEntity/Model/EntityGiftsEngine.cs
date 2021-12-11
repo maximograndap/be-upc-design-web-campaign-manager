@@ -7,7 +7,7 @@ namespace DBEntity
     public class EntityGiftsEngine
     {
         public int idRegla { get; set; }
-        public int idObsequio { get; set; }
+        public string idObsequio { get; set; }
         public string nombreObsequio { get; set; }
         public int idProducto { get; set; }
         public string nombreProducto { get; set; }

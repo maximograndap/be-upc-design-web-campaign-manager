@@ -126,6 +126,7 @@ namespace API
             services.AddTransient<ICustomerCampaignRepository, CustomerCampaignRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IConfigureCampaignRepository, ConfigureCampaignRepository>();
+            services.AddTransient<ICriteriaEngine, CriteriaEngineRepository>();
 
             // ----------------------------------------------------------------
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();

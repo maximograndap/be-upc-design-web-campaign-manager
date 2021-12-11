@@ -11,8 +11,9 @@ namespace DBContext
 {
     public class CampaignCriteriaRepository : BaseRepository, ICampaignCriteriaRepository
     {
-        public List<EntityCampaignCriteria> GetCampaignCriteria(int idCampania)
+        public BaseResponse GetCampaignCriteria(int idCampania)
         {
+            var entityResponse = new BaseResponse();
             var listCriteria = new List<EntityCampaignCriteria>();
 
             try
@@ -34,14 +35,32 @@ namespace DBContext
                         param: paramCriteria,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
+
+                    if (listCriteria.Count() > 0)
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = listCriteria;
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
+                    }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
             }
 
-            return listCriteria;
+            return entityResponse;
         }
     }
 }

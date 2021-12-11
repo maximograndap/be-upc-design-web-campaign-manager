@@ -10,8 +10,9 @@ namespace DBContext
 {
     public class BondsEngineRepository : BaseRepository, IBondsEngineRepository
     {
-        public List<EntityBondsEngine> GetBondsEngine(int idRegla)
+        public BaseResponse GetBondsEngine(int idRegla)
         {
+            var entityResponse = new BaseResponse();
             var listBonds = new List<EntityBondsEngine>();
 
             try
@@ -33,14 +34,32 @@ namespace DBContext
                         param: paramBonds,
                         commandType: CommandType.StoredProcedure
                         ).ToList();
+
+                    if (listBonds.Count() > 0)
+                    {
+                        entityResponse.issuccess = true;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = listBonds;
+                    }
+                    else
+                    {
+                        entityResponse.issuccess = false;
+                        entityResponse.errorcode = "0";
+                        entityResponse.errormessage = String.Empty;
+                        entityResponse.data = null;
+                    }
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                entityResponse.issuccess = false;
+                entityResponse.errorcode = "-1";
+                entityResponse.errormessage = ex.Message;
+                entityResponse.data = null;
             }
 
-            return listBonds;
+            return entityResponse;
         }
     }
 }

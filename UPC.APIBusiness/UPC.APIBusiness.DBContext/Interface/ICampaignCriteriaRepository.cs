@@ -7,6 +7,6 @@ namespace DBContext
 {
     public interface ICampaignCriteriaRepository
     {
-        List<EntityCampaignCriteria> GetCampaignCriteria(int idCampania);
+        BaseResponse GetCampaignCriteria(int idCampania);
     }
 }
